@@ -31,4 +31,9 @@ router.get('/quizzes/:quizId(\\d+)/play',  quizController.play);
 router.get('/quizzes/:quizId(\\d+)/check', quizController.check);
 
 
+//Rutas cargar randomplay y cargar la respuesta
+router.get('/quizzes/randomplay/', quizController.randomplay);
+router.get('/quizzes/randomcheck/:quizId(\\d+)', quizController.randomcheck);
+
+
 module.exports = router;
