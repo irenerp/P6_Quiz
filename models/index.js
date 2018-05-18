@@ -28,7 +28,7 @@ sequelize.import(path.join(__dirname,'session'));
 });*/
 
 sequelize.sync()
-.then(function(){
+/*.then(function(){
     sequelize.models.quiz.count();
 })
 .then(function (count) {
@@ -40,7 +40,7 @@ sequelize.sync()
             { question: "Capital de Portugal", answer: "Lisboa"}
         ]);
     }
-})
+})*/
 .then(() => console.log('Data Bases created successfully'))
 .catch(error => {
     console.log("Error creating the data base tables:", error);
