@@ -22,7 +22,7 @@ exports.index = (req, res, next) => {
 
     models.quiz.findAll()
     .then(quizzes => {
-        res.render('quizzes/index.ejs', {quizzes});
+        res.render('quizzes/index.ejs', {quizzes}); // dentro de la carpeta views, dentro de quizzes
     })
     .catch(error => next(error));
 };
@@ -33,7 +33,7 @@ exports.show = (req, res, next) => {
 
     const {quiz} = req;
 
-    res.render('quizzes/show', {quiz});
+    res.render('quizzes/show', {quiz});  // dentro de la carpeta views, dentro de quizzes
 };
 
 
@@ -45,7 +45,7 @@ exports.new = (req, res, next) => {
         answer: ""
     };
 
-    res.render('quizzes/new', {quiz});
+    res.render('quizzes/new', {quiz});  // dentro de la carpeta views, dentro de quizzes
 };
 
 // POST /quizzes/create
