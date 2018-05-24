@@ -194,6 +194,7 @@ exports.randomplay = (req, res, next) => {
 
 exports.randomcheck = (req, res, next) => {
 
+        let score = req.session.randomPlay.length;
         req.session.randomPlay = req.session.randomPlay || [];
 
         const answer = req.query.answer || "";
@@ -205,7 +206,7 @@ exports.randomcheck = (req, res, next) => {
             }
         } 
 
-        let score = req.session.randomPlay.length;
+        
 
         res.render('quizzes/random_result', {
             answer,
