@@ -39,3 +39,6 @@ quiz.belongsTo(user, {as: 'author', foreignKey: 'authorId'});
 
 
 module.exports = sequelize;
+
+
+
