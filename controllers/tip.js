@@ -17,6 +17,42 @@ exports.load = (req, res, next, tipId) => {
         .catch(error => next(error));
 };
 
+exports.adminOrAuthorRequired = (req, res, next) => {
+    const isAdmin = !! req.session.user.isAdmin;
+    const isAuthor = req.session.user.id === req.tip.authorId;
+    if(isAdmin || isAuthor){
+        next();
+    }else{
+        req.send(403);
+    }
+}
+
+// GET /quizzes/:quizId/edit
+exports.edit = (req, res, next) => {
+    const{quiz,tip} = req;
+    res.render('tips/edit', {quiz, tip});
+}
+
+
+// PUT /quizzes/:quizId
+exports.update = (req, res, next) => {
+    const{quiz,tip} = req;
+    tip.text = req.body.text;
+    tip.save({fields: ["text", "accepted"]})
+        .then(tip => {
+            req.flash('success', 'Tip edited successfully.');
+            res.redirect('/quizzes/' + quiz.id);
+        })
+        .catch(Sequelize.ValidationError, error => {
+            req.flash('error', 'There are errors in the form:');
+            error.errors.forEach(({message}) => req.flash('error', message));
+            res.render('tips/edit', {quiz, tip});
+        })
+        .catch(error => {
+            req.flash('error', 'Error editing the Quiz: ' + error.message);
+            next(error);
+        });
+}
 
 // POST /quizzes/:quizId/tips
 exports.create = (req, res, next) => {
