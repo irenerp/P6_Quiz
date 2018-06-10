@@ -1,13 +1,23 @@
-<form method="post" action="/quizzes/<%=quiz.id %>/tips/<% tip.id %>?_method=PUT">
+<h1>
+    Edit Tip:
+</h1>
 
-	<div class="wideRow">
-		<label for"text class="itemNarrow">Pista a editar: </label>
-		<label type="text" class="itemWide" id="text" name="text" value="<% tip.text" %> placeholder="escriba text de la pista" autocomplete="off">
-	</div>
+<form method="POST" action="/quizzes/<%= quiz.id %>/tips/<%= tip.id %>?_method=PUT" >
 
-	<br/>
-	<a href="/goback"><button type="button">Cancel</button></a>
+    <div class="wideRow">
 
-	<input type="submit" value="Save">
+        <span class="itemNarrow"> Tip A EDITAR :</span>
 
+        <input type="text" class="itemWide" id="tip" name="text" value="<%= tip.text %>" placeholder="Tip" autocomplete="off" />
+
+        <button type="submit" class="itemNarrow">Edit</button>
+    </div>
+
+</form>
+
+
+    <br/>
+    <a href="/goback"><button type="button">Cancel</button></a>
+
+    <input type="submit" value="Save">
 </form>
