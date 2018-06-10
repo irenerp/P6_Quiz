@@ -70,7 +70,7 @@ exports.index = (req, res, next) => {
 
     let countOptions = {
         where: {}
-        include: []
+        
     };
   const searchfavourites = req.query.searchfavourites || "";
 
