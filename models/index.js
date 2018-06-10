@@ -22,28 +22,44 @@ sequelize.import(path.join(__dirname,'tip'));
 // Import the definition of the Users Table from user.js
 sequelize.import(path.join(__dirname,'user'));
 
+// Import the definition of the Attachments Table from attachment.js
+sequelize.import(path.join(__dirname,'attachment'));
+
 // Session
 sequelize.import(path.join(__dirname,'session'));
 
 
 // Relation between models
 
-const {quiz, tip, user} = sequelize.models;
+const {quiz, tip, attachment, user} = sequelize.models;
 
 tip.belongsTo(quiz);
 quiz.hasMany(tip);
-
-//tip.belongsTo(quiz);
-//quiz.hasMany(tip);
-
 
 // Relation 1-to-N between User and Quiz:
 user.hasMany(quiz, {foreignKey: 'authorId'});
 quiz.belongsTo(user, {as: 'author', foreignKey: 'authorId'});
 
-user.hasMany(tip, {foreignKey: 'authorId'});
-tip.belongsTo(user, {as: 'author', foreignKey: 'authorId'});
+// Relation 1-to-1 between Quiz and Attachment
+attachment.belongsTo(quiz);
+quiz.hasOne(attachment);
 
+// Relation 1-to-1 between Quiz and User:
+//    A User has many favourite quizzes.
+//    A quiz has many fans (the users who have marked it as favorite)
+quiz.belongsToMany(user, {
+    as: 'fans',
+    through: 'favourites',
+    foreignKey: 'quizId',
+    otherKey: 'userId'
+});
+
+user.belongsToMany(quiz, {
+    as: 'favouriteQuizzes',
+    through: 'favourites',
+    foreignKey: 'userId',
+    otherKey: 'quizId'
+});
 
 module.exports = sequelize;
 
