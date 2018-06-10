@@ -155,7 +155,7 @@ exports.create = (req, res, next) => {
 // GET /quizzes/:quizId/edit
 exports.edit = (req, res, next) => {
 
-    const {quiz} = req;
+    const {tip, quiz} = req;
 
     res.render('quizzes/edit', {quiz});
 };
@@ -164,7 +164,7 @@ exports.edit = (req, res, next) => {
 // PUT /quizzes/:quizId
 exports.update = (req, res, next) => {
 
-    const {quiz, body} = req;
+    const {quiz, tip, body} = req;
 
     quiz.question = body.question;
     quiz.answer = body.answer;
@@ -201,29 +201,30 @@ exports.destroy = (req, res, next) => {
 };
 
 
-// GET /quizzes/:quizId/play
+// GET /quizzes/:quizId/play SACA SOLO EL FORMULARIO, NO COMPRUEBA
 exports.play = (req, res, next) => {
 
     const {quiz, query} = req;
 
-    const answer = query.answer || '';
+    const answer = query.answer || ''; //QUERY es el parametro que vas a meter, puede ser bueno o malo, no lo comprueba
+
 
     res.render('quizzes/play', {
-        quiz,
+        quiz, //tiene la pregunta y la respuesta en la base de datos 
         answer
     });
 };
 
 
 // GET /quizzes/:quizId/check
-exports.check = (req, res, next) => {
+exports.check = (req, res, next) => { //comprueba el play y te saca el resultado
 
     const {quiz, query} = req;
 
-    const answer = query.answer || "";
-    const result = answer.toLowerCase().trim() === quiz.answer.toLowerCase().trim();
+    const answer = query.answer || ""; //respuesta que tu das
+    const result = answer.toLowerCase().trim() === quiz.answer.toLowerCase().trim();// comparamos con la respuesta original
 
-    res.render('quizzes/result', {
+    res.render('quizzes/result', { //Es la vista en internet, lo que saca por pantalla
         quiz,
         result,
         answer

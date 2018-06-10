@@ -1,5 +1,6 @@
+
 const express = require('express');
-const router = express.Router();
+const router = express.Router(); //MW que permite agrupar otros MW
 
 const quizController = require('../controllers/quiz');
 const tipController = require('../controllers/tip');
@@ -42,7 +43,7 @@ router.get([
 //-----------------------------------------------------------
 
 /* GET home page. */
-router.get('/', (req, res, next) => {
+router.get('/', (req, res, next) => { //renderiza la vista index
   res.render('index');
 });
 
@@ -52,7 +53,7 @@ router.get('/author', (req, res, next) => {
 });
 
 
-// Autoload for routes using :quizId
+// Autoload for routes using :quizId  ANTICIPA LA BUSQUEDA EN LA BASE DE DATOS
 router.param('quizId', quizController.load);
 router.param('userId', userController.load);
 router.param('tipId',  tipController.load);
@@ -94,10 +95,8 @@ router.get('/users/:userId(\\d+)/quizzes',
 
 
 // Routes for the resource /quizzes
-router.get('/quizzes',
-	quizController.index);
-router.get('/quizzes/:quizId(\\d+)',
-	quizController.show);
+router.get('/quizzes', quizController.index);
+router.get('/quizzes/:quizId(\\d+)', quizController.show); //Las dos baras y el +d son para la url pasar como parametro el numro del quiz
 router.get('/quizzes/new',
     sessionController.loginRequired,
 	quizController.new);
@@ -123,13 +122,8 @@ router.get('/quizzes/:quizId(\\d+)/check', quizController.check);
 
 
 
-router.post('/quizzes/:quizId(\\d+)/tips',
-    sessionController.loginRequired,
-    tipController.create);
-router.put('/quizzes/:quizId(\\d+)/tips/:tipId(\\d+)/accept',
-    sessionController.loginRequired,
-    quizController.adminOrAuthorRequired,
-    tipController.accept);
+router.post('/quizzes/:quizId(\\d+)/tips', sessionController.loginRequired, tipController.create);
+router.put('/quizzes/:quizId(\\d+)/tips/:tipId(\\d+)/accept',sessionController.loginRequired,quizController.adminOrAuthorRequired,tipController.accept);
 router.delete('/quizzes/:quizId(\\d+)/tips/:tipId(\\d+)',
     sessionController.loginRequired,
     quizController.adminOrAuthorRequired,
@@ -138,6 +132,9 @@ router.delete('/quizzes/:quizId(\\d+)/tips/:tipId(\\d+)',
 //Rutas cargar randomplay y cargar la respuesta
 router.get('/quizzes/randomplay/', quizController.randomplay);
 router.get('/quizzes/randomcheck/:quizId(\\d+)', quizController.randomcheck);
+
+router.get('/quizzes/:qquizId(\\d+)/tips/:tipId(\\d+)/edit', sessionController.loginRequired, tipController.adminOrAuthorRequired, tipController.edit);
+roter.put('/quizzes/:quizId(\\d+)/tips/tipId(\\d+)', sessionController.loginRequired, tipController.adminOrAuthorRequired, tipController.update);
 
 
 

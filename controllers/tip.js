@@ -6,20 +6,17 @@ const {models} = require("../models");
 exports.load = (req, res, next, tipId) => {
 
 
-    models.quiz.findById(tipId, {
-        include: [
-           // models.tip,
-            {model: models.user, as: 'author'} //tip.user es el autor
-        ]
-    })
-    .then(tip => {
-        if (tip) {
+    models.quiz.findById(tipId)
+    
+    .then(tip=>{
+        if(tip){
             req.tip = tip;
             next();
-        } else {
-            next(new Error('There is no tip with tipId=' + tipId));
+        }else{
+            next(new Error ('There is no tip with tipId=' + tipId));
         }
     })
+
     .catch(error => next(error));
 };
 
@@ -81,5 +78,41 @@ exports.destroy = (req, res, next) => {
         res.redirect('/quizzes/' + req.params.quizId);
     })
     .catch(error => next(error));
+};
+
+exports.adminOrAuthorRequired = (req, res, next) => {
+
+    const isAdmin  = !!req.session.user.isAdmin;
+    const isAuthor = req.quiz.authorId === req.session.user.id;
+
+    if (isAdmin || isAuthor) {
+        next();
+    } else {
+        console.log('Prohibited operation: The logged in user is not the author of the quiz, nor an administrator.');
+        res.send(403);
+    }
+};
+
+exports.update = (req, res, next) => {
+
+    const {quiz, tip, body} = req;
+
+    tip.text = body.text;
+
+    tip.save({fields: ["text"]})
+    .then(tip =>{
+        rep.flash('success', 'Tip edited successfully');
+        res.redirect('/goback');
+    })
+    .catch(Sequelize.ValidationError, error =>{
+        req.flash('error', 'There are error in the form');
+        error.errors.forEach(({message})=> req.flash('error'));
+        res.render('tips/edit', {tip, quiz});
+    })
+
+    .catch(error => {
+        req.flash('error', 'Error editing the quiz:' + error.message);
+        next(error);
+    });
 };
 

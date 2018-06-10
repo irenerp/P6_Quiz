@@ -3,26 +3,26 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
-var cookieParser = require('cookie-parser');
+var cookieParser = require('cookie-parser');//importa MWs utilizados 
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var SequelizeStore = require('connect-session-sequelize')(session.Store);
 var partials = require('express-partials');
 var flash = require('express-flash');
-var methodOverride = require('method-override');
+var methodOverride = require('method-override'); //instalar metodo de navegar que permite solicitudes GET,POST, PUT, DELETE
 
-var index = require('./routes/index');
+var index = require('./routes/index'); //importa routers del directorio
 
-var app = express();
+var app = express(); //Crea la aplicación
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.set('view engine', 'ejs'); //instalar renderizacion de vistas
 
 // uncomment after placing your favicon in /public
-app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico'))); //Mostrar icono en la pestaña de internet
 app.use(logger('dev'));
-app.use(bodyParser.json());
+app.use(bodyParser.json()); //Instalar MWs que procesan partes de req o res
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
@@ -41,7 +41,7 @@ app.use(session({
     saveUninitialized: true
 }));
 
-app.use(methodOverride('_method', {methods: ["POST", "GET"]}));
+app.use(methodOverride('_method', {methods: ["POST", "GET"]})); //imoirtar metodo
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(partials());
 app.use(flash());
@@ -58,8 +58,9 @@ app.use(function(req, res, next) {
 app.use('/', index);
 
 // catch 404 and forward to error handler
+//Ningun MW anterior ha estendido la ruta. Actuan como controladores de respuestas de error
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
+  var err = new Error('Not Found'); 
   err.status = 404;
   next(err);
 });
@@ -71,8 +72,8 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  res.status(err.status || 500); //500 si no se ha definido el codigo de respuesta 
+  res.render('error'); //renderiza la vista de respuesta de errores
 });
 
 module.exports = app;
