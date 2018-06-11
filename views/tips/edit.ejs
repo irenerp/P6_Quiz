@@ -1,4 +1,4 @@
-<form method="post" action="/quizzes/<%= quiz.id %>/tip/<%= t<form method="post" action="/quizzes/<%= quiz.id %>/tip/<%= tip.id %>?_method=PUT">
+<form method="post" action="/quizzes/<%= quiz.id %>/tip/<%= tip.id %>?_method=PUT">
 	<div class="wideRow">
 		<label for="text"  class="itemNarrow">Pista a editar:</label>
 		<input type="text" class="itemWide" id="text" name="text" value="<%= tip.text %>" placeholder="Tip" autocomplete="off"/>
