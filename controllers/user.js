@@ -142,7 +142,6 @@ exports.update = (req, res, next) => {
 };
 
 
-
 // DELETE /users/:userId
 exports.destroy = (req, res, next) => {
 
