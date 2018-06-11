@@ -1,4 +1,4 @@
-onst Sequelize = require("sequelize");
+const Sequelize = require("sequelize");
 const {models} = require("../models");
 const url = require('url');
 

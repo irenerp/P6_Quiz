@@ -9,15 +9,12 @@
             <a href="/users/<%= users[i].id %>" ><%= users[i].username %></a>
             <%= users[i].isAdmin ? "(admin)" : "" %>
         </td>
-
         <% if (session.user) { %>
-
             <% if (session.user.isAdmin || session.user.id === users[i].id) { %>
                 <td>
                     <a href="/users/<%= users[i].id %>/edit"><button>edit</button></a>
                 </td>
             <%  } %>
-
             <% if (session.user.isAdmin && session.user.id !== users[i].id) { %>
                 <td>
                     <a href="/users/<%= users[i].id %>?_method=DELETE"
@@ -26,9 +23,7 @@
                     </a>
                 </td>
             <%  } %>
-
         <% } %>
-
     </tr>
     <%  } %>
 </table>
